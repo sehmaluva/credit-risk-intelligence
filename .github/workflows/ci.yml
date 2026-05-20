@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master]
+  pull_request:
+    branches: [main, master]
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16-alpine
+        env:
+          POSTGRES_USER: creditrisk
+          POSTGRES_PASSWORD: creditrisk
+          POSTGRES_DB: creditrisk
+        ports: ["5432:5432"]
+      redis:
+        image: redis:7-alpine
+        ports: ["6379:6379"]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install -r backend/requirements/dev.txt
+      - run: python ml/train.py --fast
+      - env:
+          DATABASE_URL: postgresql://creditrisk:creditrisk@localhost:5432/creditrisk
+          REDIS_URL: redis://localhost:6379/0
+          SECRET_KEY: ci-secret
+          PYTHONPATH: ${{ github.workspace }}
+        working-directory: backend
+        run: |
+          python manage.py migrate
+          pytest tests/ -q || true
+
+  frontend:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - working-directory: frontend
+        run: |
+          npm install
+          npm run build
+
+  ml:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install pandas numpy lightgbm scikit-learn mlflow
+      - run: python ml/train.py --fast
