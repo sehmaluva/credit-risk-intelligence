@@ -5,7 +5,7 @@ WORKDIR /app
 RUN apt-get update && apt-get install -y --no-install-recommends \
     build-essential libpq-dev && rm -rf /var/lib/apt/lists/*
 
-COPY backend/requirements/prod.txt /app/backend/requirements/prod.txt
+COPY backend/requirements /app/backend/requirements
 RUN pip install --no-cache-dir -r /app/backend/requirements/prod.txt
 
 COPY ml /app/ml

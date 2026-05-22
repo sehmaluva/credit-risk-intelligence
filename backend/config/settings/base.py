@@ -167,6 +167,7 @@ CORS_ALLOWED_ORIGINS = [
     "http://127.0.0.1:5173",
     "http://127.0.0.1:3000",
     "http://127.0.0.1:8080",
+    "http://10.89.1.4:5173",
 ]
 CORS_ALLOW_CREDENTIALS = True  # Allow cookies to be sent
 CORS_ALLOW_HEADERS = [
