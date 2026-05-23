@@ -23,7 +23,7 @@ Create a **Redis** instance. Copy the connection URL as `REDIS_URL`.
 | `DATABASE_URL` | From Render Postgres |
 | `REDIS_URL` | From Render Redis |
 | `ALLOWED_HOSTS` | `your-api.onrender.com` |
-| `CORS_ALLOWED_ORIGINS` | `https://your-frontend.onrender.com` |
+| `CORS_ALLOWED_ORIGINS` | `frontend url` |
 | `DJANGO_SETTINGS_MODULE` | `config.settings.prod` |
 | `ML_ARTIFACTS_PATH` | `/opt/render/project/src/ml/artifacts` |
 
@@ -38,7 +38,7 @@ Duplicate the web service as a **Background Worker**:
 
 - **Build Command**: `cd frontend && npm install && npm run build`
 - **Publish Directory**: `frontend/dist`
-- **Environment**: `VITE_API_URL=https://your-api.onrender.com/api/v1`
+- **Environment**: `VITE_API_URL=https://frontend_address/api/v1`
 
 ## 6. ML Artifacts
 

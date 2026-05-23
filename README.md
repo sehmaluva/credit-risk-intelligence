@@ -76,7 +76,7 @@ Artifacts: `ml/artifacts/` (`calibrated_model.pkl`, `feature_manifest.json`, `sh
 # Backend
 cd backend
 pip install -r requirements/dev.txt
-export DATABASE_URL=postgresql://creditrisk:creditrisk@localhost:5433/creditrisk
+export DATABASE_URL=database_url
 export PYTHONPATH=..
 python manage.py migrate
 python ../scripts/seed_demo.py

@@ -9,6 +9,11 @@ on:
 jobs:
   backend:
     runs-on: ubuntu-latest
+    env:
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
+      REDIS_URL: ${{ secrets.REDIS_URL }}
+      SECRET_KEY: ${{ secrets.SECRET_KEY }}
+      PYTHONPATH: ${{ github.workspace }}
     services:
       postgres:
         image: postgres:16-alpine
@@ -27,12 +32,7 @@ jobs:
           python-version: "3.12"
       - run: pip install -r backend/requirements/dev.txt
       - run: python ml/train.py --fast
-      - env:
-          DATABASE_URL: postgresql://creditrisk:creditrisk@localhost:5432/creditrisk
-          REDIS_URL: redis://localhost:6379/0
-          SECRET_KEY: ci-secret
-          PYTHONPATH: ${{ github.workspace }}
-        working-directory: backend
+      - working-directory: backend
         run: |
           python manage.py migrate
           pytest tests/ -q || true

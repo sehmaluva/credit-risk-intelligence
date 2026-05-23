@@ -22,3 +22,5 @@ backend/db.sqlite3
 mlruns/
 *.db
 artifacts/
+.vscode/
+.idea/
